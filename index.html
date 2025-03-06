@@ -1,0 +1,628 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>BRAZZA-BOOST - Réseaux sociaux</title>
+  <style>
+    /*------------------------------------------
+    Variables CSS
+    -------------------------------------------*/
+    :root {
+      --primary-color: #007BFF;
+      --secondary-color: #f4f4f4;
+      --text-color: #333;
+      --heading-color: #222;
+      --font-family: Arial, sans-serif;
+      --transition-speed: 0.3s;
+      --background-overlay: rgba(255, 255, 255, 0);
+    }
+    
+    /* Augmentation de la taille de police de base pour tout le site */
+    html {
+      font-size: 18px;
+    }
+
+    /*------------------------------------------
+    Réinitialisation et styles globaux
+    -------------------------------------------*/
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    body {
+      font-family: var(--font-family);
+      line-height: 1.5;
+      color: var(--text-color);
+      background: url('https://static.vecteezy.com/system/resources/previews/036/708/930/non_2x/curve-wave-blue-abstract-background-free-png.png') no-repeat center center fixed;
+      background-size: cover;
+    }
+    .overlay {
+      background-color: var(--background-overlay);
+      min-height: 100vh;
+    }
+
+    /*------------------------------------------
+    En-tête et Navigation
+    -------------------------------------------*/
+    header {
+      background: var(--primary-color);
+      color: #fff;
+      padding: 1rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      position: relative;
+    }
+    header h1 {
+      font-size: 1.3rem;
+      display: flex;
+      align-items: center;
+    }
+    .rocket-icon {
+      width: 35px;
+      height: 35px;
+      margin-right: 8px;
+      vertical-align: middle;
+    }
+    nav ul {
+      list-style: none;
+      display: flex;
+      align-items: center;
+      transition: max-height var(--transition-speed);
+    }
+    nav ul li {
+      margin-left: 1rem;
+    }
+    nav ul li a {
+      color: #fff;
+      text-decoration: none;
+      font-size: 0.95rem;
+      font-weight: bold;
+      transition: color var(--transition-speed);
+    }
+    nav ul li a:hover,
+    nav ul li a:focus {
+      opacity: 0.8;
+    }
+
+    /*------------------------------------------
+    Menu hamburger pour mobile
+    -------------------------------------------*/
+    #menu-toggle {
+      display: none;
+    }
+    .menu-icon {
+      display: none;
+      cursor: pointer;
+      width: 30px;
+      height: 25px;
+      position: relative;
+      z-index: 1100;
+    }
+    .menu-icon span {
+      display: block;
+      height: 3px;
+      width: 100%;
+      background: #fff;
+      margin: 5px 0;
+      transition: all var(--transition-speed) ease;
+    }
+    @media (max-width: 768px) {
+      nav ul {
+        flex-direction: column;
+        background: var(--primary-color);
+        position: absolute;
+        top: 100%;
+        left: 0;
+        right: 0;
+        overflow: hidden;
+        max-height: 0;
+      }
+      nav ul li {
+        border-top: 1px solid var(--primary-color);
+        text-align: center;
+        padding: 0.5rem 0;
+      }
+      #menu-toggle:checked + label.menu-icon + nav ul {
+        max-height: 500px;
+      }
+      .menu-icon {
+        display: block;
+      }
+      #menu-toggle:checked + label.menu-icon span:nth-child(1) {
+        transform: translateY(8px) rotate(45deg);
+      }
+      #menu-toggle:checked + label.menu-icon span:nth-child(2) {
+        opacity: 0;
+      }
+      #menu-toggle:checked + label.menu-icon span:nth-child(3) {
+        transform: translateY(-8px) rotate(-45deg);
+      }
+    }
+
+    /*------------------------------------------
+    Section Hero
+    -------------------------------------------*/
+    .hero {
+      position: relative;
+      background: url('https://cdn.pixabay.com/photo/2020/05/18/16/17/social-media-5187243_1280.png') no-repeat center center/cover;
+      padding: 3rem 1.5rem;
+      text-align: center;
+      color: #fff;
+    }
+    .hero::before {
+      content: "";
+      position: absolute;
+      top: 0; left: 0;
+      right: 0; bottom: 0;
+      background-color: rgba(0, 0, 0, 0.5);
+      z-index: 1;
+    }
+    .hero h2,
+    .hero p,
+    .hero button {
+      position: relative;
+      z-index: 2;
+    }
+    .hero h2 {
+      font-size: 2rem;
+      margin-bottom: 1rem;
+    }
+    .hero p {
+      font-size: 1rem;
+      max-width: 700px;
+      margin: auto;
+    }
+    .hero button {
+      background: var(--primary-color);
+      color: #fff;
+      border: none;
+      padding: 0.7rem 1.3rem;
+      font-size: 0.95rem;
+      cursor: pointer;
+      border-radius: 5px;
+      transition: background-color var(--transition-speed);
+    }
+    .hero button:hover,
+    .hero button:focus {
+      opacity: 0.8;
+    }
+
+    /*------------------------------------------
+    Sections Générales
+    -------------------------------------------*/
+    section {
+      padding: 2.5rem 1.5rem;
+    }
+    .section-title {
+      text-align: center;
+      margin-bottom: 1.5rem;
+      font-size: 1.8rem;
+      color: var(--heading-color);
+    }
+    /* Application de l’effet animate aux titres */
+    .section-title.animate {
+      opacity: 0;
+      transform: translateY(20px);
+      transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+    }
+    .section-title.animate.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    /* Application de l'effet animate aux textes */
+    .section-content,
+    .section-subtitle,
+    .hero p {
+      opacity: 0;
+      transform: translateY(20px);
+      transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+    }
+    .section-content.animate.visible,
+    .section-subtitle.animate.visible,
+    .hero p.animate.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /*------------------------------------------
+    Section Emplacement (mise en page en grille)
+    -------------------------------------------*/
+    #emplacement .emplacement-container {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 1rem;
+      align-items: start;
+      justify-items: center;
+    }
+    #emplacement .map,
+    #emplacement .emplacement-text {
+      width: 100%;
+      margin: 0.5rem;
+    }
+
+    /*------------------------------------------
+    Footer
+    -------------------------------------------*/
+    footer {
+      background: var(--primary-color);
+      color: #fff;
+      text-align: center;
+      padding: 1rem;
+    }
+
+    /*------------------------------------------
+    Icône WhatsApp
+    -------------------------------------------*/
+    .whatsapp-icon {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      z-index: 1000;
+    }
+    .whatsapp-icon img {
+      width: 50px;
+      height: 50px;
+    }
+
+    /*------------------------------------------
+    Animations de défilement (fade in)
+    -------------------------------------------*/
+    .animate {
+      opacity: 0;
+      transform: translateY(20px);
+      transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+    }
+    .animate.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /*------------------------------------------
+    Section Témoignages
+    -------------------------------------------*/
+    #testimonials .testimonial-container {
+      display: flex;
+      flex-direction: column;
+      gap: 1.5rem;
+      max-width: 800px;
+      margin: auto;
+    }
+    #testimonials .testimonial {
+      background: #f9f9f9;
+      padding: 1.5rem;
+      border-radius: 5px;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    }
+    #testimonials .testimonial p {
+      font-style: italic;
+      margin-bottom: 0.5rem;
+    }
+    #testimonials .testimonial span {
+      display: block;
+      text-align: right;
+      font-weight: bold;
+    }
+
+    /*------------------------------------------
+    Section Contact
+    -------------------------------------------*/
+    #contact {
+      background: #fff;
+      padding: 2.5rem 1.5rem;
+    }
+    .contact-form {
+      max-width: 600px;
+      margin: auto;
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+    .contact-form input,
+    .contact-form textarea {
+      padding: 0.8rem;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      font-size: 1rem;
+    }
+    .contact-form button {
+      background: var(--primary-color);
+      color: #fff;
+      border: none;
+      padding: 0.8rem;
+      font-size: 1rem;
+      border-radius: 4px;
+      cursor: pointer;
+      transition: background-color var(--transition-speed);
+    }
+    .contact-form button:hover,
+    .contact-form button:focus {
+      opacity: 0.8;
+    }
+
+    /*------------------------------------------
+    Accessibilité
+    -------------------------------------------*/
+    a:focus,
+    button:focus,
+    input:focus,
+    textarea:focus {
+      outline: 2px solid var(--primary-color);
+      outline-offset: 4px;
+    }
+  </style>
+</head>
+<body>
+  <div class="overlay">
+    <header>
+      <h1 class="animate visible">
+        <img src="https://cdn-icons-png.flaticon.com/512/5681/5681710.png" alt="Icône" class="rocket-icon" />
+        <strong>BRAZZA-BOOST</strong>
+      </h1>
+      <input type="checkbox" id="menu-toggle" />
+      <label for="menu-toggle" class="menu-icon">
+        <span></span>
+        <span></span>
+        <span></span>
+      </label>
+      <nav>
+        <ul>
+          <li><a href="#choisir">Pourquoi nous choisir ?</a></li>
+          <li><a href="#services">Nos services</a></li>
+          <li><a href="#apropos">À propos</a></li>
+          <li><a href="#emplacement">Emplacement</a></li>
+          <li><a href="#testimonials">Témoignage</a></li>
+        </ul>
+      </nav>
+    </header>
+
+    <main>
+      <!-- Section Hero -->
+      <section class="hero">
+        <h2 class="animate">Boostez votre présence sur les réseaux sociaux</h2>
+        <p class="animate">
+          <strong>BRAZZA-BOOST</strong> vous aide à créer des <strong>comptes monétisés</strong> et à augmenter votre <strong>audience</strong> sur <strong>TikTok, Facebook et Instagram</strong>.
+        </p>
+        <button onclick="window.location.href='#services'">Nos services</button>
+      </section>
+
+      <!-- Section Services -->
+      <section id="services">
+        <h2 class="section-title animate">Nos services</h2>
+        <div class="emplacement-container">
+          <div class="services-image" style="width:100%; margin:0.5rem;">
+            <img src="https://static.vecteezy.com/system/resources/previews/047/598/448/non_2x/close-up-hand-holding-holding-black-mobile-phone-with-blank-white-screen-isolated-on-transparent-background-with-clipping-path-3d-render-free-png.png" alt="Image représentant nos services" style="width:100%; height:auto;">
+          </div>
+          <div class="services-text" style="width:100%; margin:0.5rem;">
+            <p class="section-content animate">
+              - Création de <strong>comptes monétisés</strong> sur TikTok<br>
+              - Augmentation des <strong>abonnés</strong> et <strong>likes</strong> sur TikTok, Facebook et Instagram<br>
+              - Optimisation de votre présence sur les réseaux sociaux
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <!-- Section Pourquoi nous choisir ? -->
+      <section id="choisir">
+        <h2 class="section-title animate">Pourquoi nous choisir ?</h2>
+        <div class="emplacement-container">
+          <div class="choisir-image" style="width:100%; margin:0.5rem;">
+            <img src="https://static.vecteezy.com/system/resources/previews/055/454/885/large_2x/man-in-blue-suit-holding-phone-free-png.png" alt="Homme en costume bleu tenant un téléphone" style="width:100%; height:auto;">
+          </div>
+          <div class="choisir-text" style="width:100%; margin:0.5rem;">
+            <p class="section-content animate">
+              <strong>Chez Brazza-Boost</strong>, nous vous aidons à transformer votre présence sur les réseaux sociaux grâce à des <strong>stratégies sur-mesure</strong> qui maximisent votre <strong>impact</strong> et vos <strong>revenus</strong>. Voici les avantages de nos services pour un <strong>Compte TikTok Monétisé</strong> et pour booster votre <strong>page Facebook</strong> ainsi que votre <strong>compte Instagram</strong>.
+            </p>
+
+            <h3 class="section-subtitle animate"><strong>Compte TikTok Monétisé</strong></h3>
+            <!-- Image TikTok juste en dessous du titre -->
+            <div style="text-align: center; margin: 1rem 0;">
+              <img 
+                src="https://static.vecteezy.com/system/resources/previews/016/716/450/large_2x/tiktok-icon-free-png.png" 
+                alt="Icône TikTok" 
+                style="max-width: 200px; height: auto;"
+              />
+            </div>
+            <ul class="section-content animate">
+              <li><strong>Génération de revenus</strong> : Transformez vos contenus en source de revenus grâce aux programmes de monétisation et au Fonds des Créateurs.</li>
+              <li><strong>Valorisation de votre image</strong> : Un compte monétisé renforce votre crédibilité et attire des partenariats de marques.</li>
+              <li><strong>Accès à des fonctionnalités avancées</strong> : Profitez d’outils analytiques et de contenus exclusifs pour optimiser vos performances et engager votre audience.</li>
+              <li><strong>Opportunités de collaboration</strong> : Positionnez-vous comme un influenceur incontournable, attirant ainsi des offres de collaborations et de sponsoring.</li>
+            </ul>
+
+            <h3 class="section-subtitle animate"><strong>Booster votre page Facebook et votre compte Instagram</strong></h3>
+            <!-- Bloc avec deux images côte à côte -->
+            <div style="display: flex; justify-content: center; align-items: center; gap: 1rem; margin: 1rem 0;">
+              <img 
+                src="https://static.vecteezy.com/system/resources/previews/018/930/415/large_2x/instagram-logo-instagram-icon-transparent-free-png.png" 
+                alt="Icône Instagram" 
+                style="max-width: 150px; height: auto;"
+              />
+              <img 
+                src="https://static.vecteezy.com/system/resources/previews/018/930/476/non_2x/facebook-logo-facebook-icon-transparent-free-png.png" 
+                alt="Icône Facebook" 
+                style="max-width: 150px; height: auto;"
+              />
+            </div>
+            <ul class="section-content animate">
+              <li><strong>Visibilité accrue</strong> : Augmentez votre portée et faites découvrir votre marque à une audience plus large et ciblée.</li>
+              <li><strong>Engagement renforcé</strong> : Des campagnes de boosting bien ciblées génèrent davantage d’interactions et fidélisent votre communauté.</li>
+              <li><strong>Croissance rapide de l’audience</strong> : Bénéficiez d’une augmentation significative de vos abonnés et de vos interactions grâce à des stratégies adaptées à chaque plateforme.</li>
+              <li><strong>Analyses approfondies</strong> : Suivez et analysez vos performances avec des outils de reporting pour ajuster vos campagnes en temps réel et obtenir des résultats concrets.</li>
+              <li><strong>Optimisation des campagnes publicitaires</strong> : Maximisez le retour sur investissement de vos campagnes grâce à des techniques de ciblage précises et à une gestion professionnelle des budgets publicitaires.</li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <!-- Section À propos -->
+      <section id="apropos">
+        <h2 class="section-title animate">À propos de nous</h2>
+        <div class="emplacement-container">
+          <div class="apropos-image" style="width:100%; margin:0.5rem;">
+            <img src="https://static.vecteezy.com/system/resources/previews/046/822/443/large_2x/a-woman-sits-on-the-floor-joyfully-watching-her-smartphone-isolated-on-a-transparent-background-free-png.png" alt="Femme regardant joyeusement son smartphone" style="width:100%; height:auto;">
+          </div>
+          <div class="apropos-text" style="width:100%; margin:0.5rem;">
+            <p class="section-content animate">
+              Notre agence se spécialise dans la création de <strong>comptes TikTok monétisés</strong> et l’augmentation de l’<strong>engagement</strong> sur <strong>TikTok, Facebook et Instagram</strong> 📱. Nous élaborons des <strong>stratégies digitales sur-mesure</strong>, alliant <strong>créativité</strong> et <strong>expertise technique</strong>, pour booster vos <strong>abonnés</strong> et vos <strong>likes</strong> de manière organique 🚀. En optimisant vos <strong>contenus</strong> et en exploitant les <strong>dernières tendances</strong>, nous transformons chaque interaction en <strong>opportunité de croissance</strong> 💡. Grâce à nos méthodes éprouvées, votre présence en ligne gagne en <strong>visibilité</strong> et en <strong>crédibilité</strong>, tout en maximisant vos <strong>revenus</strong> 💰. Faites confiance à notre <strong>équipe passionnée</strong> pour faire de votre projet digital un véritable <strong>succès</strong> 🌟.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <!-- Section Témoignages -->
+      <section id="testimonials">
+        <h2 class="section-title animate">Témoignages</h2>
+        <div class="emplacement-container">
+          <div class="testimonial-image" style="width:100%; margin:0.5rem;">
+            <img src="https://static.vecteezy.com/system/resources/previews/055/243/166/large_2x/young-woman-holding-smartphone-in-stylish-black-jacket-free-png.png" alt="Jeune femme tenant un smartphone" style="width:100%; height:auto;">
+          </div>
+          <div class="testimonial-text" style="width:100%; margin:0.5rem;">
+            <div class="testimonial-container">
+              <div class="testimonial animate">
+                <p>"BRAZZA-BOOST a transformé ma présence sur les réseaux sociaux. Une équipe professionnelle et réactive!"</p>
+                <span>- Client satisfait</span>
+              </div>
+              <div class="testimonial animate">
+                <p>"Grâce à leurs stratégies innovantes, j'ai vu mon audience doubler en quelques mois."</p>
+                <span>- Influenceur digital</span>
+              </div>
+              <div class="testimonial animate">
+                <p>"Des services sur-mesure qui m'ont aidé à maximiser mes revenus en ligne."</p>
+                <span>- Entrepreneur</span>
+              </div>
+              <div class="testimonial animate">
+                <p>"Leur approche a été révolutionnaire pour mon business en ligne."</p>
+                <span>- Entrepreneur Innovant</span>
+              </div>
+              <div class="testimonial animate">
+                <p>"Une équipe qui sait vraiment comment booster votre présence digitale!"</p>
+                <span>- Expert en Marketing</span>
+              </div>
+              <div class="testimonial animate">
+                <p>"Les résultats obtenus avec BRAZZA-BOOST sont impressionnants, je recommande vivement!"</p>
+                <span>- Marketer Avancé</span>
+              </div>
+              <div class="testimonial animate">
+                <p>"Une stratégie efficace qui a boosté ma visibilité en un temps record."</p>
+                <span>- Influenceuse Mode</span>
+              </div>
+              <div class="testimonial animate">
+                <p>"Leur expertise a permis à mon entreprise de se démarquer sur les réseaux sociaux."</p>
+                <span>- PDG de Startup</span>
+              </div>
+              <div class="testimonial animate">
+                <p>"Je suis ravi des performances et de l'engagement généré par leur travail."</p>
+                <span>- Consultant Digital</span>
+              </div>
+              <div class="testimonial animate">
+                <p>"BRAZZA-BOOST a complètement transformé ma communication en ligne."</p>
+                <span>- Créateur de contenu</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Section Contact -->
+      <section id="contact">
+        <h2 class="section-title animate">Contactez-nous</h2>
+        <!-- Image ajoutée juste en dessous du titre Contactez-nous -->
+        <div style="text-align: center; margin: 1rem 0;">
+          <img 
+            src="https://static.vecteezy.com/system/resources/previews/055/138/492/large_2x/google-mail-logo-glossy-rounded-google-mail-logo-free-png.png" 
+            alt="Logo Google Mail" 
+            style="max-width: 150px; height: auto;"
+          />
+        </div>
+        <form class="contact-form" action="mailto:brazzaboost@gmail.com" method="post" enctype="text/plain">
+          <input type="text" placeholder="Votre nom" required>
+          <input type="email" placeholder="Votre email" required>
+          <textarea placeholder="Votre message" rows="5" required></textarea>
+          <button type="submit">Envoyer</button>
+        </form>
+      </section>
+
+      <!-- Section Call Center -->
+      <section id="call-center">
+        <h2 class="section-title animate">Notre service Client est disponible 24h/7j</h2>
+        <div style="text-align: center; margin: 1rem 0;">
+          <img 
+            src="https://static.vecteezy.com/system/resources/previews/054/953/708/large_2x/a-friendly-black-male-call-center-character-engaged-in-customer-support-activities-3d-black-male-call-center-character-on-transparent-background-free-png.png" 
+            alt="Call Center" 
+            style="max-width: 300px; height: auto;"
+          />
+        </div>
+        <div style="text-align: center; margin-bottom: 1rem;">
+          <a href="tel:+242066995050">
+            <button style="background: var(--primary-color); color: #fff; border: none; padding: 0.8rem 1.3rem; font-size: 1rem; border-radius: 4px; cursor: pointer;">
+              Appelez-nous
+            </button>
+          </a>
+        </div>
+      </section>
+
+      <!-- Section Emplacement -->
+      <section id="emplacement">
+        <h2 class="section-title animate">Emplacement</h2>
+        <div class="emplacement-container">
+          <div class="map">
+            <iframe 
+              src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d15817.847404024417!2d15.2372!3d-4.2650!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x1a6a2c5c9e16e2f3%3A0x9169f1fd0c8d3!2sBrazzaville%2C%20Congo!5e0!3m2!1sfr!2s!4v1683387400000" 
+              width="100%" 
+              height="300" 
+              style="border:0;" 
+              allowfullscreen="" 
+              loading="lazy" 
+              referrerpolicy="no-referrer-when-downgrade">
+            </iframe>
+          </div>
+          <div class="emplacement-text">
+            <p class="section-content animate">
+              Découvrez notre siège social idéalement situé au <strong>90 Rue Mbokos</strong> (Réf: <strong>derrière la CNSS de moungali</strong>), en plein cœur de <strong>Brazzaville (CONGO)</strong>. Notre local moderne offre un cadre professionnel propice aux échanges et à la collaboration. Nous vous accueillons chaleureusement du <strong>lundi au vendredi de 9h à 18h</strong>. Venez nous rendre visite pour discuter de vos projets et découvrir nos solutions innovantes.
+            </p>
+          </div>
+        </div>
+        <div style="text-align: center; margin-top: 1rem;">
+          <a href="https://www.facebook.com/share/15wG2TJtK2/?mibextid=wwXIfr" target="_blank">
+            <img src="https://cdn-icons-png.flaticon.com/512/5968/5968764.png" alt="Facebook" style="max-width:150px; height:auto;">
+          </a>
+        </div>
+      </section>
+    </main>
+
+    <footer>
+      <p>&copy; 2025 <strong>BRAZZA-BOOST</strong>. Tous droits réservés.</p>
+    </footer>
+  </div>
+
+  <!-- Icône WhatsApp toujours visible -->
+  <a href="https://wa.me/242066995050" class="whatsapp-icon" target="_blank">
+    <img 
+      src="https://cdn-icons-png.flaticon.com/512/733/733585.png" 
+      alt="WhatsApp Chat" 
+    />
+  </a>
+
+  <!-- Script pour l'animation au défilement -->
+  <script>
+    function reveal() {
+      const reveals = document.querySelectorAll('.animate');
+      for (let i = 0; i < reveals.length; i++) {
+        const windowHeight = window.innerHeight;
+        const elementTop = reveals[i].getBoundingClientRect().top;
+        if (elementTop < windowHeight - 50) {
+          reveals[i].classList.add('visible');
+        } else {
+          reveals[i].classList.remove('visible');
+        }
+      }
+    }
+    window.addEventListener('scroll', reveal);
+    window.addEventListener('load', reveal);
+  </script>
+</body>
+</html>
